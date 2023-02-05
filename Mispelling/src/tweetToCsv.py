@@ -94,7 +94,7 @@ class TweetToCsv:
         outtweets = [[ tweet.text.encode("utf-8")] for tweet in alltweets]
 
         #write the csv
-        with open('csv\%s_tweets.csv' % screen_name, 'wb') as f:
+        with open('csv/%s_tweets.csv' % screen_name, 'wb') as f:
             writer = csv.writer(f)
             writer.writerows(outtweets)
             pass
@@ -112,7 +112,7 @@ class TweetToCsv:
         clean = []
 
         for i in range(0,length): #length): #for all csv
-            with open('csv\%s_tweets.csv' % name[i], 'rb') as f:    
+            with open('csv/%s_tweets.csv' % name[i], 'rb') as f:
                 reader = csv.reader(f)
 
             #clean rows
@@ -139,19 +139,19 @@ class TweetToCsv:
                         clean.append(newstr.lower().strip())
 
         #write the csv
-        with open('csv\clean_tweets.csv', 'wb') as f:
+        with open('csv/clean_tweets.csv', 'wb') as f:
             writer = csv.writer(f, delimiter='\n')
             writer.writerows([clean])
             pass
 
-        with open('csv\clean_tweets.csv', 'rb') as f:
+        with open('csv/clean_tweets.csv', 'rb') as f:
             reader = csv.reader(f)
             ns = []
             for line in reader:
                 r = re.sub("\s\s+" , " ", line[0].strip())
                 ns.append(r)
 
-        with open('csv\clean_tweets.csv', 'wb') as f:
+        with open('csv/clean_tweets.csv', 'wb') as f:
             writer = csv.writer(f, delimiter='\n')
             writer.writerows([ns])
 
@@ -160,7 +160,7 @@ class TweetToCsv:
         #dividi i tweet in 80/20
         gt_list = []
         test_list = []
-        with open('csv\clean_tweets.csv', 'rb') as clean:
+        with open('csv/clean_tweets.csv', 'rb') as clean:
             reader = csv.reader(clean)
             for line in reader:
                 r = random.random()
@@ -169,7 +169,7 @@ class TweetToCsv:
                 else:
                     test_list.append(line[0])
 
-        with open('csv\gt_tweets.csv', 'wb') as gt, open('csv\lp_tweets.csv', 'wb') as test:
+        with open('csv/gt_tweets.csv', 'wb') as gt, open('csv/lp_tweets.csv', 'wb') as test:
             writer_gt = csv.writer(gt, delimiter = '\n')
             writer_gt.writerows([gt_list])
             writer_test = csv.writer(test, delimiter = '\n')
@@ -181,7 +181,7 @@ class TweetToCsv:
         print("Start perturbation")
 
         riscrittura = []
-        with open('csv\lp_tweets.csv', 'rb') as r:
+        with open('csv/lp_tweets.csv', 'rb') as r:
             reader = csv.reader(r)
             for line in reader:
                 tweet = line[0]
@@ -194,7 +194,7 @@ class TweetToCsv:
                     if i == len(tweet)-1:
                         riscrittura.append(tweet)
 
-        with open('csv\perturbation_tweets.csv', 'wb') as w:
+        with open('csv/perturbation_tweets.csv', 'wb') as w:
             writer = csv.writer(w, delimiter='\n')
             writer.writerows([riscrittura])
 

@@ -40,7 +40,7 @@ def calculate_capabilities(original_file, post_correction_file, gui, parola = "B
 
     """                       ######### PER TESTING #########
 
-    with open('csv\clean_tweets.csv', 'rb') as f1, open('csv\output_tweets.csv', 'rb') as f2:
+    with open('csv/clean_tweets.csv', 'rb') as f1, open('csv/output_tweets.csv', 'rb') as f2:
         rdr1 = csv.reader(f1)
         rdr2 = csv.reader(f2)
         c = 1

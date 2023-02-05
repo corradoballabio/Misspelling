@@ -59,7 +59,7 @@ class Hmm:
 
         self.model.bake(True,None)
 
-        csv_prova = open("csv\perturbation_tweets.csv")
+        csv_prova = open("csv/perturbation_tweets.csv")
         inferred_text = []
         prova = []
         for line in csv_prova:
@@ -77,7 +77,7 @@ class Hmm:
             prova.append(''.join(inferred_text).strip())
             inferred_text = []
 
-        with open('csv\output_tweets.csv', 'wb') as w:
+        with open('csv/output_tweets.csv', 'wb') as w:
             writer = csv.writer(w, delimiter= '\n')
             writer.writerows([prova])
 

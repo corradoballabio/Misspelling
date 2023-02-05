@@ -41,8 +41,8 @@ if __name__ == '__main__':
     csv.perturbate_tweets()
 
     esteem.transiction()
-    clean_tweets = open('csv\lp_tweets.csv')
-    perturbed_tweets = open('csv\perturbation_tweets.csv')
+    clean_tweets = open('csv/lp_tweets.csv')
+    perturbed_tweets = open('csv/perturbation_tweets.csv')
     esteem.observations_p(clean_tweets, perturbed_tweets)
 
     ##############################################################################################
@@ -54,14 +54,14 @@ if __name__ == '__main__':
 
     print("################################################################")
     print("DIFFERENZA TRA ORIGINALI")
-    clean_tweets = open('csv\lp_tweets.csv')
-    perturbed_tweets = open('csv\perturbation_tweets.csv')
+    clean_tweets = open('csv/lp_tweets.csv')
+    perturbed_tweets = open('csv/perturbation_tweets.csv')
     prediction_capabilities.calculate_capabilities(clean_tweets, perturbed_tweets, ui)
 
     print("################################################################")
     print("DIFFERENZA FINALE")
-    clean_tweets = open('csv\lp_tweets.csv')
-    output_tweets = open('csv\output_tweets.csv')
+    clean_tweets = open('csv/lp_tweets.csv')
+    output_tweets = open('csv/output_tweets.csv')
     prediction_capabilities.calculate_capabilities(clean_tweets, output_tweets, ui, "After: ")
 
     ##############################################################################################
