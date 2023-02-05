@@ -39,12 +39,12 @@ if __name__ == '__main__':
     print("PULIZIA TWEETS")
     csv.cleanCsv()
     csv.perturbate_tweets()
-   
+
     esteem.transiction()
     clean_tweets = open('csv\lp_tweets.csv')
     perturbed_tweets = open('csv\perturbation_tweets.csv')
     esteem.observations_p(clean_tweets, perturbed_tweets)
-    
+
     ##############################################################################################
     print("GENERAZIONE MODELLO HMM")
     hmm = Hmm(esteem.transition_p, esteem.obs_matrix, esteem.pigreco, esteem.final_p )
@@ -57,14 +57,14 @@ if __name__ == '__main__':
     clean_tweets = open('csv\lp_tweets.csv')
     perturbed_tweets = open('csv\perturbation_tweets.csv')
     prediction_capabilities.calculate_capabilities(clean_tweets, perturbed_tweets, ui)
-    
+
     print("################################################################")
     print("DIFFERENZA FINALE")
     clean_tweets = open('csv\lp_tweets.csv')
     output_tweets = open('csv\output_tweets.csv')
     prediction_capabilities.calculate_capabilities(clean_tweets, output_tweets, ui, "After: ")
-       
+
     ##############################################################################################
-    
     Form.show()
+
     sys.exit(app.exec_())
