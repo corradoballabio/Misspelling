@@ -56,8 +56,8 @@ class TweetToCsv:
         
     def get_all_tweets(self, screen_name):
         
-        print "start get_all_tweets"
         
+        print("start get_all_tweets")
         #authorize twitter, initialize tweepy
         auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
         auth.set_access_token(access_token, access_token_secret)
@@ -77,8 +77,8 @@ class TweetToCsv:
     
         #keep grabbing tweets until there are no tweets left to grab
         while len(new_tweets) > 0:
-            print "getting tweets gefore %s" % (oldest)
         
+            print("getting tweets gefore %s" % (oldest))
             #all subsiquent requests use the max_id param to prevent duplicates
             new_tweets = api.user_timeline(screen_name = screen_name,count=200,max_id=oldest)
         
@@ -88,9 +88,9 @@ class TweetToCsv:
             #update the id of the oldest tweet less one
             oldest = alltweets[-1].id - 1
         
-        print "...%s tweets downloaded so far" % (len(alltweets))
     
         #transform the tweepy tweets into a 2D array that will populate the csv    
+        print("...%s tweets downloaded so far" % (len(alltweets)))
         outtweets = [[ tweet.text.encode("utf-8")] for tweet in alltweets]
         
         #write the csv    
@@ -98,15 +98,15 @@ class TweetToCsv:
             writer = csv.writer(f)
             writer.writerows(outtweets)
             pass
-        print "end get_all_tweets"
+        print("end get_all_tweets")
 
     
     def cleanCsv(self):
     
-        print "Start cleanCsv"    
     
         #list with name of csv   
         #name = ["BBCBreaking","WSJPolitics","NBA","nytimes","Pontifex","POTUS","SkyFootball","UN","WSJ","WWF"]  
+        print("Start cleanCsv")
         name = ["UKLabour", "Conservatives", "David_Cameron", "MayorofLondon", "UniofOxford","Cambridge_Uni"]
         length = len(name)
         clean = []
@@ -155,8 +155,8 @@ class TweetToCsv:
             writer = csv.writer(f, delimiter='\n')
             writer.writerows([ns])
         
-        print "End cleanCsv"
         
+        print("End cleanCsv")
         #dividi i tweet in 80/20
         gt_list = []
         test_list = []
@@ -178,8 +178,8 @@ class TweetToCsv:
 
     def perturbate_tweets(self): 
         
-        print "Start perturbation"
         
+        print("Start perturbation")
         riscrittura = []
         with open('csv\lp_tweets.csv', 'rb') as r:
             reader = csv.reader(r)
@@ -198,4 +198,4 @@ class TweetToCsv:
             writer = csv.writer(w, delimiter='\n')
             writer.writerows([riscrittura])                       
         
-        print "End perturbation"
+        print("End perturbation")

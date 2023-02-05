@@ -26,9 +26,8 @@ def calculate_capabilities(original_file, post_correction_file, gui, parola = "B
         for i in range(len(original_string)):
             if not (original_string[i] == post_string[i]):
                 mismatch_counter += 1
-        print gui.textBrowser.append("Errors "+ parola+ "\n" + str( float(mismatch_counter)/len(original_string)))
+        print(gui.textBrowser.append("Errors "+ parola+ "\n" + str( float(mismatch_counter)/len(original_string))))
     else:
-        print gui.textBrowser.append("ERROR: le lunghezze dei due file non coincidono")    
         
         
         
@@ -38,6 +37,7 @@ def calculate_capabilities(original_file, post_correction_file, gui, parola = "B
         
         
         
+        print(gui.textBrowser.append("ERROR: le lunghezze dei due file non coincidono"))
     """                       ######### PER TESTING #########
     
     with open('csv\clean_tweets.csv', 'rb') as f1, open('csv\output_tweets.csv', 'rb') as f2:
@@ -47,12 +47,12 @@ def calculate_capabilities(original_file, post_correction_file, gui, parola = "B
         for file1_line in rdr1:
             file2_line = rdr2.next()
             c += 1
-            #print file1_line[0]
-            #print file2_line[0]
+            #print(file1_line[0])
+            #print(file2_line[0])
             if not (len(file1_line[0]) == len(file2_line[0])):
-                print "righe diverse cazzo vi ho gamato:"
-                print file1_line
-                print file2_line
-                print "linea "
-                print c
+                print("righe diverse cazzo vi ho gamato:")
+                print(file1_line)
+                print(file2_line)
+                print("linea ")
+                print(c)
     """

@@ -31,4 +31,4 @@ def perturbate_tweets():
         writer = csv.writer(w, delimiter='\n')
         writer.writerows([riscrittura])               
                     
-    print "finito"
+    print("finito")

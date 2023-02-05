@@ -35,9 +35,9 @@ class Ground_Truth:
     obs_matrix = numpy.zeros(shape = (26, 26))
     
     def transiction(self):
-        print "Start transiction"
         
         inputfile = open('csv\gt_tweets.csv')          
+        print("Start transiction")
         word_counter = 0
         for line in inputfile : #leggo tutte le parole 
             for word in line.split() : #divido lo stream di char in string appena trovo uno spazio
@@ -71,20 +71,20 @@ class Ground_Truth:
     
         if (TEST == "T"):
             #stampa vettore pigreco
-            print "vettore pigreco:"
-            print self.pigreco
-            print "\n" 
         
+            print("vettore pigreco:")
+            print(self.pigreco)
+            print("\n")
             #stampa matrice di transizioni
-            print "matrice transizione:"
+            print("matrice transizione:")
             for line in self.transition_p:
-                print line
+                print(line)
 
-        print "End transiction"
         
+        print("End transiction")
 
     def observations_p(self,cleaned_tweets, perturbated_tweets):
-        print "Start observations_p"
+        print("Start observations_p")
 
         clean_string = file_to_string(cleaned_tweets)
         pert_string = file_to_string(perturbated_tweets)
@@ -94,7 +94,7 @@ class Ground_Truth:
                 if isletter(clean_string[i]): #controllo se sono lettere (se dal parse tolgo i numeri posso toglierlo)
                     self.obs_matrix[ord(clean_string[i])-97][ord(pert_string[i])-97] += 1 #altrimenti non fare nulla  
         else:
-            print "ERROR: le lunghezze dei due file non coincidono"
+            print("ERROR: le lunghezze dei due file non coincidono")
 
         for i in range(len(self.obs_matrix)):
             counter = 0.0
@@ -104,4 +104,4 @@ class Ground_Truth:
                 for j in range(len(self.obs_matrix[i])):
                     self.obs_matrix[i][j] = float(self.obs_matrix[i][j])/counter 
                 
-        print "End observations_p"  
+        print("End observations_p")
