@@ -8,18 +8,11 @@ from tweetToCsv import TweetToCsv
 from ground_truth import Ground_Truth
 from hmm import Hmm
 
-import gui22
-import sys
-from PyQt4 import *
 import sys
 import prediction_capabilities
 import csv
-import sys
 
 if __name__ == '__main__':
-    app = QtGui.QApplication(sys.argv)
-    Form = QtGui.QWidget()
-    ui = gui22.Ui_Form()
     print("INIZIO MISPELLING")
 
     csv = TweetToCsv()
@@ -50,21 +43,17 @@ if __name__ == '__main__':
     hmm = Hmm(esteem.transition_p, esteem.obs_matrix, esteem.pigreco, esteem.final_p )
     hmm.create_hmm(csv.error_list)
 
-    ui.setupUi(Form, hmm)
 
     print("################################################################")
     print("DIFFERENZA TRA ORIGINALI")
     clean_tweets = open('csv/lp_tweets.csv')
     perturbed_tweets = open('csv/perturbation_tweets.csv')
-    prediction_capabilities.calculate_capabilities(clean_tweets, perturbed_tweets, ui)
+    prediction_capabilities.calculate_capabilities(clean_tweets, perturbed_tweets)
 
     print("################################################################")
     print("DIFFERENZA FINALE")
     clean_tweets = open('csv/lp_tweets.csv')
     output_tweets = open('csv/output_tweets.csv')
-    prediction_capabilities.calculate_capabilities(clean_tweets, output_tweets, ui, "After: ")
+    prediction_capabilities.calculate_capabilities(clean_tweets, output_tweets, "After: ")
 
     ##############################################################################################
-    Form.show()
-
-    sys.exit(app.exec_())
