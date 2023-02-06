@@ -39,26 +39,26 @@ class Ui_Form(object):
 
 
     def buttonClickInput(self):
-        with open('csv/lp_tweets.csv', 'rb') as f:
+        with open('csv/lp_tweets.csv', 'r') as f:
             reader = csv.reader(f)
             ns = []
             for line in reader:
                 ns.append(line)
 
-        with open('C:\input.csv', 'wb') as f:
+        with open('C:\input.csv', 'w') as f:
             writer = csv.writer(f, delimiter='\n')
             writer.writerows([ns])
         self.textBrowser.clear()
         self.textBrowser.append("File saved in C:\\input.csv")
 
     def buttonClickOutput(self):
-        with open('csv/output_tweets.csv', 'rb') as f:
+        with open('csv/output_tweets.csv', 'r') as f:
             reader = csv.reader(f)
             ns = []
             for line in reader:
                 ns.append(line)
 
-        with open('C:/output.csv', 'wb') as f:
+        with open('C:/output.csv', 'w') as f:
             writer = csv.writer(f, delimiter='\n')
             writer.writerows([ns])
 

@@ -77,7 +77,7 @@ class Hmm:
             prova.append(''.join(inferred_text).strip())
             inferred_text = []
 
-        with open('csv/output_tweets.csv', 'wb') as w:
+        with open('csv/output_tweets.csv', 'w') as w:
             writer = csv.writer(w, delimiter= '\n')
             writer.writerows([prova])
 
