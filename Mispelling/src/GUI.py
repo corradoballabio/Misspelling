@@ -91,6 +91,3 @@ class Ui_Mispelling(object):
         self.groupBox.setTitle(_translate("Mispelling", "Text", None))
         self.groupBox_2.setTitle(_translate("Mispelling", "Original Text", None))
         self.pushButton_2.setText(_translate("Mispelling", "PushButton", None))
-
-
-

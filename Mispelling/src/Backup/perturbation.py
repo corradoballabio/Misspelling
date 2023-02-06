@@ -12,9 +12,9 @@ from numpy.random.mtrand import randint
 from tweetToCsv import error_list
 
 
-def perturbate_tweets(): 
+def perturbate_tweets():
     riscrittura = []
-    with open('csv\clean_tweets.csv', 'rb') as r:
+    with open('csv/clean_tweets.csv', 'r') as r:
         reader = csv.reader(r)
         for line in reader:
             tweet = line[0]
@@ -26,9 +26,9 @@ def perturbate_tweets():
                         tweet = tweet[:i] + tweetToCsv.error_list[ord(tweet[i])-97][r_index] + tweet[i+1:]
                 if i == len(tweet)-1:
                     riscrittura.append(tweet)
-     
-    with open('csv\perturbation_tweets.csv', 'wb') as w:
+
+    with open('csv/perturbation_tweets.csv', 'w') as w:
         writer = csv.writer(w, delimiter='\n')
-        writer.writerows([riscrittura])               
-                    
-    print "finito"
+        writer.writerows([riscrittura])
+
+    print("finito")
