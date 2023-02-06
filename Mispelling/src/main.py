@@ -4,13 +4,10 @@ Created on 28 mag 2016
 @author: Work
 '''
 
-from tweetToCsv import *
-from ground_truth import *
-from hmm import Hmm
-
-import sys
+import tweetToCsv
+import ground_truth
 import prediction_capabilities
-import csv
+from hmm import Hmm
 
 if __name__ == '__main__':
     print("INIZIO MISPELLING")
@@ -18,27 +15,27 @@ if __name__ == '__main__':
     ##############################################################################################
     """
     print("SCARICA TWEETS")
-    csv.get_all_tweets("UKLabour")
-    csv.get_all_tweets("Conservatives")
-    csv.get_all_tweets("David_Cameron")
-    csv.get_all_tweets("MayorofLondon")
-    csv.get_all_tweets("UniofOxford")
-    csv.get_all_tweets("Cambridge_Uni")
+    tweetToCsv.get_all_tweets("UKLabour")
+    tweetToCsv.get_all_tweets("Conservatives")
+    tweetToCsv.get_all_tweets("David_Cameron")
+    tweetToCsv.get_all_tweets("MayorofLondon")
+    tweetToCsv.get_all_tweets("UniofOxford")
+    tweetToCsv.get_all_tweets("Cambridge_Uni")
     """
     ##############################################################################################
     print("PULIZIA TWEETS")
-    cleanCsv()
-    perturbate_tweets()
+    tweetToCsv.cleanCsv()
+    tweetToCsv.perturbate_tweets()
 
-    transiction()
+    ground_truth.transiction()
     clean_tweets = open('csv/lp_tweets.csv')
     perturbed_tweets = open('csv/perturbation_tweets.csv')
-    observations_p(clean_tweets, perturbed_tweets)
+    ground_truth.observations_p(clean_tweets, perturbed_tweets)
 
     ##############################################################################################
     print("GENERAZIONE MODELLO HMM")
-    hmm = Hmm(transition_p, obs_matrix, pigreco, final_p )
-    hmm.create_hmm(error_list)
+    hmm = Hmm(ground_truth.transition_p, ground_truth.obs_matrix, ground_truth.pigreco, ground_truth.final_p )
+    hmm.create_hmm(tweetToCsv.error_list)
 
 
     print("################################################################")

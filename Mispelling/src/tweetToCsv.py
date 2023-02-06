@@ -5,9 +5,7 @@ import tweepy
 import csv
 import re
 import random
-
-from numpy.random.mtrand import randint
-from ground_truth import *
+import ground_truth
 
 #Twitter API credentials
 
@@ -183,7 +181,7 @@ def perturbate_tweets():
         for line in reader:
             tweet = line[0]
             for i in range(len(tweet)):
-                if isletter(tweet[i]):
+                if ground_truth.isletter(tweet[i]):
                     r = random.random()
                     if r < 0.1:
                         r_index = random.randint(0, len(error_list[ord(tweet[i])-97]) - 1)

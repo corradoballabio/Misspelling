@@ -4,18 +4,9 @@ Created on 04 giu 2016
 @author: Work
 '''
 
-import numpy as np
 import csv
-import re
-from matplotlib.pyplot import *
-
-
-import string
-import numpy
-from pomegranate import *
-from numpy import double
-from ground_truth import iswordcorrect, isletter
-
+import ground_truth
+import pomegranate
 
 class Hmm:
     transition_p = []
@@ -35,11 +26,11 @@ class Hmm:
 
     def create_hmm(self, error_list):
 
-        self.model = HiddenMarkovModel("Mispelling")
+        self.model = pomegranate.HiddenMarkovModel("Mispelling")
 
         for i in range(0,26):
 
-            globals()[self.nameL[i].strip()] = State(DiscreteDistribution( { 'a': self.observations_p[i][0], 'b': self.observations_p[i][1], 'c': self.observations_p[i][2], 'd': self.observations_p[i][3], 'e': self.observations_p[i][4], 'f': self.observations_p[i][5], 'g': self.observations_p[i][6], 'h': self.observations_p[i][7],
+            globals()[self.nameL[i].strip()] = pomegranate.State(pomegranate.DiscreteDistribution( { 'a': self.observations_p[i][0], 'b': self.observations_p[i][1], 'c': self.observations_p[i][2], 'd': self.observations_p[i][3], 'e': self.observations_p[i][4], 'f': self.observations_p[i][5], 'g': self.observations_p[i][6], 'h': self.observations_p[i][7],
                                  'i': self.observations_p[i][8], 'j': self.observations_p[i][9], 'k': self.observations_p[i][10], 'l': self.observations_p[i][11],'m': self.observations_p[i][12], 'n': self.observations_p[i][13], 'o': self.observations_p[i][14], 'p': self.observations_p[i][15],
                                  'q': self.observations_p[i][16], 'r': self.observations_p[i][17], 's': self.observations_p[i][18], 't': self.observations_p[i][19],
                                  'u': self.observations_p[i][20], 'v':self.observations_p[i][21], 'w': self.observations_p[i][22], 'x': self.observations_p[i][23],
@@ -64,7 +55,7 @@ class Hmm:
         prova = []
         for line in csv_prova:
             for word in line.split():
-                if iswordcorrect(word) and not(word == "nan") and not(word == "inf"):
+                if ground_truth.iswordcorrect(word) and not(word == "nan") and not(word == "inf"):
                     logp, path = self.model.viterbi(word)
                     for idx, state in path:
                         if (state.name != "Mispelling-start") and (state.name != "Mispelling-end"):
@@ -100,7 +91,7 @@ class Hmm:
 
     def correct_word(self, word):
         for i in range(len(word)):
-            if not isletter(word[i]):
+            if not ground_truth.isletter(word[i]):
                 if not len(word[:i]) == 0:
                     logp, path = self.model.viterbi(word[:i])
                     for idx, state in path:
