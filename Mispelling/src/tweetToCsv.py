@@ -56,16 +56,16 @@ def get_all_tweets(screen_name):
     api = tweepy.API(auth)
 
     #initialize a list to hold all the tweepy Tweets
-    alltweets = []
+    all_tweets = []
 
     #make initial request for most recent tweets (200 is the maximum allowed count)
     new_tweets = api.user_timeline(screen_name = screen_name,count=200)
 
     #save most recent tweets
-    alltweets.extend(new_tweets)
+    all_tweets.extend(new_tweets)
 
     #save the id of the oldest tweet less one
-    oldest = alltweets[-1].id - 1
+    oldest = all_tweets[-1].id - 1
 
     #keep grabbing tweets until there are no tweets left to grab
     while len(new_tweets) > 0:
@@ -75,27 +75,27 @@ def get_all_tweets(screen_name):
         new_tweets = api.user_timeline(screen_name = screen_name,count=200,max_id=oldest)
 
         #save most recent tweets
-        alltweets.extend(new_tweets)
+        all_tweets.extend(new_tweets)
 
         #update the id of the oldest tweet less one
-        oldest = alltweets[-1].id - 1
+        oldest = all_tweets[-1].id - 1
 
-    print("...%s tweets downloaded so far" % (len(alltweets)))
+    print("...%s tweets downloaded so far" % (len(all_tweets)))
 
     #transform the tweepy tweets into a 2D array that will populate the csv
-    outtweets = [[ tweet.text.encode("utf-8")] for tweet in alltweets]
+    out_tweets = [[ tweet.text.encode("utf-8")] for tweet in all_tweets]
 
     #write the csv
     with open('csv/%s_tweets.csv' % screen_name, 'w') as f:
         writer = csv.writer(f)
-        writer.writerows(outtweets)
+        writer.writerows(out_tweets)
         pass
     print("end get_all_tweets")
 
 
-def cleanCsv():
+def clean_csv():
 
-    print("Start cleanCsv")
+    print("Start clean_csv")
 
     #list with name of csv
     #name = ["BBCBreaking","WSJPolitics","NBA","nytimes","Pontifex","POTUS","SkyFootball","UN","WSJ","WWF"]
@@ -168,7 +168,7 @@ def cleanCsv():
         writer_test = csv.writer(test, delimiter = '\n')
         writer_test.writerows([test_list])
 
-    print("End cleanCsv")
+    print("End clean_csv")
 
 
 def perturbate_tweets():
@@ -181,7 +181,7 @@ def perturbate_tweets():
         for line in reader:
             tweet = line[0]
             for i in range(len(tweet)):
-                if ground_truth.isletter(tweet[i]):
+                if ground_truth.is_letter(tweet[i]):
                     r = random.random()
                     if r < 0.1:
                         r_index = random.randint(0, len(error_list[ord(tweet[i])-97]) - 1)

@@ -24,7 +24,7 @@ if __name__ == '__main__':
     """
     ##############################################################################################
     print("PULIZIA TWEETS")
-    tweetToCsv.cleanCsv()
+    tweetToCsv.clean_csv()
     tweetToCsv.perturbate_tweets()
 
     ground_truth.transiction()

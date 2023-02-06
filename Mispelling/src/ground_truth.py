@@ -9,12 +9,12 @@ global TEST
 
 TEST = "F"
 
-def isletter(carattere):
+def is_letter(carattere):
     return ord(carattere) > 96 and ord(carattere) < 123
 
-def iswordcorrect(parola):
+def is_word_correct(parola):
     for i in range(len(parola)) :
-        if not isletter(parola[i]) :
+        if not is_letter(parola[i]) :
             return False
     return True
 
@@ -35,24 +35,24 @@ obs_matrix = numpy.zeros(shape = (26, 26))
 def transiction():
     print("Start transiction")
 
-    inputfile = open('csv/gt_tweets.csv')
+    input_file = open('csv/gt_tweets.csv')
     word_counter = 0
-    for line in inputfile : #leggo tutte le parole
+    for line in input_file : #leggo tutte le parole
         for word in line.split() : #divido lo stream di char in string appena trovo uno spazio
-            if iswordcorrect(word): #se la word contiene solo char alfabetici(escludo i # ma anche la punteggiatura)
-                if isletter(word[0]) : #DOVREBBE ESSERE INUTILE
+            if is_word_correct(word): #se la word contiene solo char alfabetici(escludo i # ma anche la punteggiatura)
+                if is_letter(word[0]) : #DOVREBBE ESSERE INUTILE
                     pigreco[ord(word[0]) - 97] += 1
                     word_counter += 1
-                if isletter(word[len(word) - 1]):
+                if is_letter(word[len(word) - 1]):
                     final_p[ord(word[len(word) - 1]) - 97] += 1
             #ora controllo le P di passare da una lettera all'altra
                 if not len(word) == 1 : #se la parola ha length almeno uguale a 2
                     for j in range(len(word)-1): #primo iteratore //faccio -1 perche incremento subito i
                         i = j + 1
-                        if isletter(word[i]): #se e' falso qua itera unaltra volta
-                            if isletter(word[j]): #se sono tutti e due lettere
+                        if is_letter(word[i]): #se e' falso qua itera unaltra volta
+                            if is_letter(word[j]): #se sono tutti e due lettere
                                 transition_p[ord(word[j]) - 97][ord(word[i])- 97] += 1
-    inputfile.close()
+    input_file.close()
 
     if not word_counter == 0:
         for i in range(len(pigreco)):
@@ -89,7 +89,7 @@ def observations_p(cleaned_tweets, perturbated_tweets):
 
     if len(clean_string) == len(pert_string): #potremmo togliere questo controllo se ci fidiamo, risparimiamo 2n di computazione
         for i in range(len(clean_string)): #per ogni char controllo se sono uguali tra i due file
-            if isletter(clean_string[i]): #controllo se sono lettere (se dal parse tolgo i numeri posso toglierlo)
+            if is_letter(clean_string[i]): #controllo se sono lettere (se dal parse tolgo i numeri posso toglierlo)
                 obs_matrix[ord(clean_string[i])-97][ord(pert_string[i])-97] += 1 #altrimenti non fare nulla
     else:
         print("ERROR: le lunghezze dei due file non coincidono")

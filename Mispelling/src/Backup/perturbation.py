@@ -16,7 +16,7 @@ def perturbate_tweets():
         for line in reader:
             tweet = line[0]
             for i in range(len(tweet)):
-                if ground_truth.isletter(tweet[i]):
+                if ground_truth.is_letter(tweet[i]):
                     r = random.random()
                     if r < 0.1:
                         r_index = random.randint(0, len(tweetToCsv.error_list[ord(tweet[i])-97]) - 1)

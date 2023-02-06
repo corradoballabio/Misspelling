@@ -40,7 +40,7 @@ def observations_p(cleaned_tweets, perturbated_tweets):
 
     if len(clean_string) == len(pert_string): #potremmo togliere questo controllo se ci fidiamo, risparimiamo 2n di computazione
         for i in range(len(clean_string)): #per ogni char controllo se sono uguali tra i due file
-            if ground_truth.isletter(clean_string[i]): #controllo se sono lettere (se dal parse tolgo i numeri posso toglierlo)
+            if ground_truth.is_letter(clean_string[i]): #controllo se sono lettere (se dal parse tolgo i numeri posso toglierlo)
                 obs_matrix[ord(clean_string[i])-97][ord(pert_string[i])-97] += 1 #altrimenti non fare nulla
             """
             if clean_string[i] == pert_string[i]: #se coincidono incremento sulla diagonale

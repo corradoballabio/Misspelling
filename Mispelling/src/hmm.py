@@ -55,7 +55,7 @@ class Hmm:
         prova = []
         for line in csv_prova:
             for word in line.split():
-                if ground_truth.iswordcorrect(word) and not(word == "nan") and not(word == "inf"):
+                if ground_truth.is_word_correct(word) and not(word == "nan") and not(word == "inf"):
                     logp, path = self.model.viterbi(word)
                     for idx, state in path:
                         if (state.name != "Mispelling-start") and (state.name != "Mispelling-end"):
@@ -91,7 +91,7 @@ class Hmm:
 
     def correct_word(self, word):
         for i in range(len(word)):
-            if not ground_truth.isletter(word[i]):
+            if not ground_truth.is_letter(word[i]):
                 if not len(word[:i]) == 0:
                     logp, path = self.model.viterbi(word[:i])
                     for idx, state in path:
