@@ -4,8 +4,8 @@ Created on 28 mag 2016
 @author: Work
 '''
 
-from tweetToCsv import TweetToCsv
-from ground_truth import Ground_Truth
+from tweetToCsv import *
+from ground_truth import *
 from hmm import Hmm
 
 import sys
@@ -14,9 +14,6 @@ import csv
 
 if __name__ == '__main__':
     print("INIZIO MISPELLING")
-
-    csv = TweetToCsv()
-    esteem = Ground_Truth()
 
     ##############################################################################################
     """
@@ -30,18 +27,18 @@ if __name__ == '__main__':
     """
     ##############################################################################################
     print("PULIZIA TWEETS")
-    csv.cleanCsv()
-    csv.perturbate_tweets()
+    cleanCsv()
+    perturbate_tweets()
 
-    esteem.transiction()
+    transiction()
     clean_tweets = open('csv/lp_tweets.csv')
     perturbed_tweets = open('csv/perturbation_tweets.csv')
-    esteem.observations_p(clean_tweets, perturbed_tweets)
+    observations_p(clean_tweets, perturbed_tweets)
 
     ##############################################################################################
     print("GENERAZIONE MODELLO HMM")
-    hmm = Hmm(esteem.transition_p, esteem.obs_matrix, esteem.pigreco, esteem.final_p )
-    hmm.create_hmm(csv.error_list)
+    hmm = Hmm(transition_p, obs_matrix, pigreco, final_p )
+    hmm.create_hmm(error_list)
 
 
     print("################################################################")
