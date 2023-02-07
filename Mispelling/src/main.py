@@ -4,7 +4,7 @@ Created on 28 mag 2016
 @author: Work
 '''
 
-import tweetToCsv
+import tweet_to_csv
 import ground_truth
 import prediction_capabilities
 from hmm import Hmm
@@ -15,17 +15,17 @@ if __name__ == '__main__':
     ##############################################################################################
     """
     print("SCARICA TWEETS")
-    tweetToCsv.get_all_tweets("UKLabour")
-    tweetToCsv.get_all_tweets("Conservatives")
-    tweetToCsv.get_all_tweets("David_Cameron")
-    tweetToCsv.get_all_tweets("MayorofLondon")
-    tweetToCsv.get_all_tweets("UniofOxford")
-    tweetToCsv.get_all_tweets("Cambridge_Uni")
+    tweet_to_csv.get_all_tweets("UKLabour")
+    tweet_to_csv.get_all_tweets("Conservatives")
+    tweet_to_csv.get_all_tweets("David_Cameron")
+    tweet_to_csv.get_all_tweets("MayorofLondon")
+    tweet_to_csv.get_all_tweets("UniofOxford")
+    tweet_to_csv.get_all_tweets("Cambridge_Uni")
     """
     ##############################################################################################
     print("PULIZIA TWEETS")
-    tweetToCsv.clean_csv()
-    tweetToCsv.perturbate_tweets()
+    tweet_to_csv.clean_csv()
+    tweet_to_csv.perturbate_tweets()
 
     ground_truth.transiction()
     clean_tweets = open('csv/lp_tweets.csv')
@@ -35,7 +35,7 @@ if __name__ == '__main__':
     ##############################################################################################
     print("GENERAZIONE MODELLO HMM")
     hmm = Hmm(ground_truth.transition_p, ground_truth.obs_matrix, ground_truth.pigreco, ground_truth.final_p )
-    hmm.create_hmm(tweetToCsv.error_list)
+    hmm.create_hmm(tweet_to_csv.error_list)
 
 
     print("################################################################")
