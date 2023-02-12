@@ -1,22 +1,8 @@
-'''
-Created on 04 giu 2016
-
-@author: corrado
-'''
-
 import numpy
-from ground_truth import isletter
+import ground_truth
 
-obs_matrix = numpy.zeros(shape = (26, 26)) #dimensione esagerata, alla fine vedi se riesci a ridurla (matrice sparsa/arraylist?)
-"""
-def count_legth(file_input): #toglibile
-    c = 0
-    for line in file_input:
-        for word in line.split():
-            for i in range(len(word)-1):
-                c += 1
-    return c
-"""
+obs_matrix = numpy.zeros(shape = (26, 26))
+
 def file_to_string(file_input):
     file_string = ""
     for line in file_input:
@@ -40,7 +26,7 @@ def observations_p(cleaned_tweets, perturbated_tweets):
 
     if len(clean_string) == len(pert_string): #potremmo togliere questo controllo se ci fidiamo, risparimiamo 2n di computazione
         for i in range(len(clean_string)): #per ogni char controllo se sono uguali tra i due file
-            if isletter(clean_string[i]): #controllo se sono lettere (se dal parse tolgo i numeri posso toglierlo)
+            if ground_truth.is_letter(clean_string[i]): #controllo se sono lettere (se dal parse tolgo i numeri posso toglierlo)
                 obs_matrix[ord(clean_string[i])-97][ord(pert_string[i])-97] += 1 #altrimenti non fare nulla
             """
             if clean_string[i] == pert_string[i]: #se coincidono incremento sulla diagonale

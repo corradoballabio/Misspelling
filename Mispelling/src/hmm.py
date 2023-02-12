@@ -1,120 +1,111 @@
-'''
-Created on 04 giu 2016
-
-@author: Work
-'''
-
-import numpy as np
-import csv
-import re
-from matplotlib.pyplot import *
-
-
+import constants
 import string
-import numpy
-from pomegranate import *
-from numpy import double
-from ground_truth import iswordcorrect, isletter
-
+import csv
+import ground_truth
+import pomegranate
 
 class Hmm:
     transition_p = []
     observations_p = []
-    pigreco = []
+    pi = []
     final_p = []
     model = ""
 
-    nameL = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
-
-    def __init__(self, tra, obs,p, f):
-        self.transition_p = tra
-        self.observations_p = obs
-        self.pigreco = p
-        self.final_p = f
+    def __init__(self, transitions, observations, pi, final):
+        self.transition_p = transitions
+        self.observations_p = observations
+        self.pi = pi
+        self.final_p = final
 
 
     def create_hmm(self, error_list):
+        alphabet = list(string.ascii_lowercase)
+        self.model = pomegranate.HiddenMarkovModel("Mispelling")
 
-        self.model = HiddenMarkovModel("Mispelling")
+        for i in range(len(alphabet)):
+            discrete_distribution = {}
 
-        for i in range(0,26):
+            for j in range(len(alphabet)):
+                discrete_distribution[alphabet[j]] = self.observations_p[i][j]
 
-            globals()[self.nameL[i].strip()] = State(DiscreteDistribution( { 'a': self.observations_p[i][0], 'b': self.observations_p[i][1], 'c': self.observations_p[i][2], 'd': self.observations_p[i][3], 'e': self.observations_p[i][4], 'f': self.observations_p[i][5], 'g': self.observations_p[i][6], 'h': self.observations_p[i][7],
-                                 'i': self.observations_p[i][8], 'j': self.observations_p[i][9], 'k': self.observations_p[i][10], 'l': self.observations_p[i][11],'m': self.observations_p[i][12], 'n': self.observations_p[i][13], 'o': self.observations_p[i][14], 'p': self.observations_p[i][15],
-                                 'q': self.observations_p[i][16], 'r': self.observations_p[i][17], 's': self.observations_p[i][18], 't': self.observations_p[i][19],
-                                 'u': self.observations_p[i][20], 'v':self.observations_p[i][21], 'w': self.observations_p[i][22], 'x': self.observations_p[i][23],
-                                 'y': self.observations_p[i][24], 'z': self.observations_p[i][25]}), name = self.nameL[i].strip())
+            globals()[alphabet[i]] = pomegranate.State(
+                pomegranate.DiscreteDistribution(discrete_distribution),
+                name = alphabet[i])
 
-            self.model.add_state(globals()[self.nameL[i].strip()])
+            self.model.add_state(globals()[alphabet[i]])
 
-        for i in range(0,26):
-            self.model.add_transition(self.model.start, globals()[self.nameL[i].strip()], self.pigreco[i])
+        for i in range(len(alphabet)):
+            self.model.add_transition(self.model.start, globals()[alphabet[i]], self.pi[i])
 
-        for i in range(0, 26):
-            self.model.add_transition(globals()[self.nameL[i].strip()], self.model.end, self.final_p[i])
+        for i in range(len(alphabet)):
+            self.model.add_transition(globals()[alphabet[i]], self.model.end, self.final_p[i])
 
-        for i in range(0,26):#insert transactions
-            for n in range(0,26):
-                self.model.add_transition(globals()[self.nameL[i].strip()], globals()[self.nameL[n].strip()], self.transition_p[i][n])
+        for i in range(len(alphabet)):
+            for j in range(len(alphabet)):
+                self.model.add_transition(globals()[alphabet[i]], globals()[alphabet[j]], self.transition_p[i][j])
 
         self.model.bake(True,None)
 
-        csv_prova = open("csv/perturbation_tweets.csv")
+        csv_test = open("csv/perturbation_tweets.csv")
         inferred_text = []
-        prova = []
-        for line in csv_prova:
+        test_rows = []
+
+        for line in csv_test:
             for word in line.split():
-                if iswordcorrect(word) and not(word == "nan") and not(word == "inf"):
-                    logp, path = self.model.viterbi(word)
-                    for idx, state in path:
-                        if (state.name != "Mispelling-start") and (state.name != "Mispelling-end"):
-                            inferred_text.append(state.name.strip())
-                    inferred_text.append(" ")
-                elif word == "nan":
-                    inferred_text.append("man ")
-                elif word == "inf":
-                    inferred_text.append("inc ")
-            prova.append(''.join(inferred_text).strip())
+                if not ground_truth.is_word_correct(word):
+                    continue
+                if word == 'nan':
+                    inferred_text.append('man ')
+                    continue
+                if word == 'inf':
+                    inferred_text.append('inc ')
+                    continue
+
+                logp, path = self.model.viterbi(word)
+                for idx, state in path:
+                    if (state.name not in ['Mispelling-start', 'Mispelling-end']):
+                        inferred_text.append(state.name.strip())
+                inferred_text.append(constants.BLANK_SPACE)
+
+            test_rows.append(''.join(inferred_text).strip())
             inferred_text = []
 
         with open('csv/output_tweets.csv', 'w') as w:
             writer = csv.writer(w, delimiter= '\n')
-            writer.writerows([prova])
+            writer.writerows([test_rows])
 
     txt = []
     out = ""
-    zuzzu = ""
+
     def correct_from_input(self, input_text):
-        print(input_text)
-        self.zuzzu = ''.join(str(input_text).lower())
         self.txt = []
-        for word in self.zuzzu.split():
+        for word in str(input_text).lower().split():
+            # TODO how to resolve these keyword errors?
             if (word == "nan"):
                 word = "man"
             if (word == "inf"):
                 word = "inc"
             self.correct_word(word)
-        self.out = ''.join(self.txt).strip()
-        return self.out
+        return ''.join(self.txt).strip()
 
 
     def correct_word(self, word):
-        for i in range(len(word)):
-            if not isletter(word[i]):
-                if not len(word[:i]) == 0:
+        for i in range(len(word)): # loop for each char
+            if not ground_truth.is_letter(word[i]): # if is not a letter??
+                if not len(word[:i]) == 0: # if is not the last char of the word
                     logp, path = self.model.viterbi(word[:i])
                     for idx, state in path:
-                        if (state.name != "Mispelling-start") and (state.name != "Mispelling-end"):
+                        if (state.name not in ['Mispelling-start', 'Mispelling-end']):
                             self.txt.append(state.name.strip())
                     self.txt.append(word[i])
                 if len(word[i+1:]) == 0:
-                    self.txt.append(' ')
+                    self.txt.append(constants.BLANK_SPACE)
                 else:
                     self.correct_word(word[i+1:])
                 return
         if not len(word) == 0:
             logp, path = self.model.viterbi(word)
             for idx, state in path:
-                if (state.name != "Mispelling-start") and (state.name != "Mispelling-end"):
+                if (state.name not in ['Mispelling-start', 'Mispelling-end']):
                     self.txt.append(state.name.strip())
-            self.txt.append(" ")
+            self.txt.append(constants.BLANK_SPACE)

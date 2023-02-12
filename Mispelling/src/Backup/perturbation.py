@@ -1,16 +1,7 @@
-'''
-
-Created on 04 giu 2016
-
-@author: corrado
-'''
 import random
 import csv
-from ground_truth import isletter
-import tweetToCsv
-from numpy.random.mtrand import randint
-from tweetToCsv import error_list
-
+import ground_truth
+import tweet_to_csv
 
 def perturbate_tweets():
     riscrittura = []
@@ -19,11 +10,11 @@ def perturbate_tweets():
         for line in reader:
             tweet = line[0]
             for i in range(len(tweet)):
-                if isletter(tweet[i]):
+                if ground_truth.is_letter(tweet[i]):
                     r = random.random()
                     if r < 0.1:
-                        r_index = random.randint(0, len(error_list[ord(tweet[i])-97]) - 1)
-                        tweet = tweet[:i] + tweetToCsv.error_list[ord(tweet[i])-97][r_index] + tweet[i+1:]
+                        r_index = random.randint(0, len(tweet_to_csv.error_list[ord(tweet[i])-97]) - 1)
+                        tweet = tweet[:i] + tweet_to_csv.error_list[ord(tweet[i])-97][r_index] + tweet[i+1:]
                 if i == len(tweet)-1:
                     riscrittura.append(tweet)
 
