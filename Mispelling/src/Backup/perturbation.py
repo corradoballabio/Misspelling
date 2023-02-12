@@ -1,9 +1,3 @@
-'''
-
-Created on 04 giu 2016
-
-@author: corrado
-'''
 import random
 import csv
 import ground_truth

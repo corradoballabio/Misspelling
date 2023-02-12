@@ -18,33 +18,35 @@ consumer_secret="E18qbpu8pEiQpxRzlWRW44ZmpmGwWV2zb1Y9eZ3G8vCrrIcPZP"
 access_token="250822105-ufFJci3R3aV5IALFpmzVBTrSCVIYQDsH2Nt6k7Jn"
 access_token_secret="8Hfv7AN8RnSwfM6oA9KOq8loSdWwvaJiQOcq6DwY8GB0T"
 
-error_list = [("s","q","z"),#a
-                      ("v","n","h","g"),#b
-                      ("x","v","f","d"),#c
-                      ("s","f","x","e"),#d
-                      ("w","r","d"),#e
-                      ("d","g","c","r","t"),#f
-                      ("f","h","v","t","y"),#g
-                      ("g","j","b","y","u"),#h
-                      ("u","o","k"),#i
-                      ("h","k","n","u"),#j
-                      ("j","l","m","i","o"),#k
-                      ("k","o","p","m"),#l
-                      ("j","k","l"),#m
-                      ("b","m","j","h"),#n
-                      ("i","p","k","l"),#o
-                      ("o","l"),#p
-                      ("w","a"),#q
-                      ("e","t","d","f"),#r
-                      ("a","d","z","w","e"),#s
-                      ("r","y","f","g"),#t
-                      ("y","i","h","j"),#u
-                      ("c","b","g"),#v
-                      ("q","e","a","s"),#w
-                      ("z","c","d","s"),#x
-                      ("t","u","g","h"),#y
-                      ("x","s","a")#z
-                 ]
+# it contains the keyboard button's letter aroun each letter of the alphabet
+error_list = [
+    ("s","q","z"),#a
+    ("v","n","h","g"),#b
+    ("x","v","f","d"),#c
+    ("s","f","x","e"),#d
+    ("w","r","d"),#e
+    ("d","g","c","r","t"),#f
+    ("f","h","v","t","y"),#g
+    ("g","j","b","y","u"),#h
+    ("u","o","k"),#i
+    ("h","k","n","u"),#j
+    ("j","l","m","i","o"),#k
+    ("k","o","p","m"),#l
+    ("j","k","l"),#m
+    ("b","m","j","h"),#n
+    ("i","p","k","l"),#o
+    ("o","l"),#p
+    ("w","a"),#q
+    ("e","t","d","f"),#r
+    ("a","d","z","w","e"),#s
+    ("r","y","f","g"),#t
+    ("y","i","h","j"),#u
+    ("c","b","g"),#v
+    ("q","e","a","s"),#w
+    ("z","c","d","s"),#x
+    ("t","u","g","h"),#y
+    ("x","s","a")#z
+]
 
 def get_all_tweets(screen_name):
 
@@ -89,7 +91,6 @@ def get_all_tweets(screen_name):
     with open('csv/%s_tweets.csv' % screen_name, 'w') as f:
         writer = csv.writer(f)
         writer.writerows(out_tweets)
-        pass
     print("end get_all_tweets")
 
 
@@ -98,75 +99,70 @@ def clean_csv():
     print("Start clean_csv")
 
     #list with name of csv
-    #name = ["BBCBreaking","WSJPolitics","NBA","nytimes","Pontifex","POTUS","SkyFootball","UN","WSJ","WWF"]
-    name = ["UKLabour", "Conservatives", "David_Cameron", "MayorofLondon", "UniofOxford","Cambridge_Uni"]
-    length = len(name)
-    clean = []
+    #source_accounts = ["BBCBreaking","WSJPolitics","NBA","nytimes","Pontifex","POTUS","SkyFootball","UN","WSJ","WWF"]
+    source_accounts = ["UKLabour", "Conservatives", "David_Cameron", "MayorofLondon", "UniofOxford","Cambridge_Uni"]
+    cleaned_text = []
 
-    for i in range(0,length): #length): #for all csv
-        with open('csv/%s_tweets.csv' % name[i], 'r') as f:
-            reader = csv.reader(f)
+    for source in source_accounts:
+        with open('csv/%s_tweets.csv' % source, 'r') as source_file:
+            reader = csv.reader(source_file)
 
-            #clean rows
+            #clean rows removing punctuation and keywords that would make the parsing to fail
             for row in reader:
-                newstr = row[0].strip().lower()
-                newstr = re.sub('([^a-zA-Z0-9_ # @ \- \'])', '', newstr.strip())
-                newstr = re.sub('([^a-z # @ \- \'])', '', newstr.strip())
-                newstr = re.sub('-', ' ', newstr.strip())
-                newstr = re.sub('\'', '', newstr.strip())
-                newstr = re.sub('\"', '', newstr.strip())
-                newstr = re.sub('(https)[a-z  # @ \%\']*', '', newstr.strip())
-                newstr = re.sub('(http)[a-zA-Z0-9_  # @ \%\']*', '', newstr.strip())
-                newstr = re.sub('(@[a-z]*)', '', newstr.strip())
-                newstr = re.sub('(#[a-z]*)', '', newstr.strip())
-                newstr = re.sub('(^rt\s[a-z \s]*)', '', newstr.strip())
-                newstr = re.sub('nan', '', newstr.strip())
-                newstr = re.sub('ban', '', newstr.strip())
-                newstr = re.sub('han', '', newstr.strip())
-                newstr = re.sub('jan', '', newstr.strip())
-                newstr = re.sub('inf', '', newstr.strip())
-                newstr = re.sub('^rt', '', newstr.strip())
-                newstr = newstr.strip()
-                if len(newstr) > 0:
-                    clean.append(newstr.lower().strip())
+                cleaned_row = row[0].strip().lower()
+                cleaned_row = re.sub('([^a-zA-Z0-9_ # @ \- \'])', '', cleaned_row.strip())
+                cleaned_row = re.sub('([^a-z # @ \- \'])', '', cleaned_row.strip())
+                cleaned_row = re.sub('-', ' ', cleaned_row.strip())
+                cleaned_row = re.sub('\'', '', cleaned_row.strip())
+                cleaned_row = re.sub('\"', '', cleaned_row.strip())
+                cleaned_row = re.sub('(https)[a-z  # @ \%\']*', '', cleaned_row.strip())
+                cleaned_row = re.sub('(http)[a-zA-Z0-9_  # @ \%\']*', '', cleaned_row.strip())
+                cleaned_row = re.sub('(@[a-z]*)', '', cleaned_row.strip())
+                cleaned_row = re.sub('(#[a-z]*)', '', cleaned_row.strip())
+                cleaned_row = re.sub('(^rt\s[a-z \s]*)', '', cleaned_row.strip())
+                cleaned_row = re.sub('nan', '', cleaned_row.strip())
+                cleaned_row = re.sub('ban', '', cleaned_row.strip())
+                cleaned_row = re.sub('han', '', cleaned_row.strip())
+                cleaned_row = re.sub('jan', '', cleaned_row.strip())
+                cleaned_row = re.sub('inf', '', cleaned_row.strip())
+                cleaned_row = re.sub('^rt', '', cleaned_row.strip())
+                cleaned_row = cleaned_row.strip()
+                if len(cleaned_row) > 0:
+                    cleaned_text.append(cleaned_row.lower().strip())
 
     #write the csv
-    with open('csv/clean_tweets.csv', 'w') as f:
-        print('WRITE 1')
-        writer = csv.writer(f, delimiter='\n')
-        writer.writerows([clean])
-        pass
+    with open('csv/clean_tweets.csv', 'w') as clean_tweets:
+        writer = csv.writer(clean_tweets, delimiter='\n')
+        writer.writerows([cleaned_text])
 
-    with open('csv/clean_tweets.csv', 'r') as f:
-        print('READ 1')
-        reader = csv.reader(f)
+    with open('csv/clean_tweets.csv', 'r') as clean_tweets:
+        reader = csv.reader(clean_tweets)
         ns = []
         for line in reader:
             r = re.sub("\s\s+" , " ", line[0].strip())
             ns.append(r)
 
-    with open('csv/clean_tweets.csv', 'w') as f:
-        print('WRITE 2')
-        writer = csv.writer(f, delimiter='\n')
+    with open('csv/clean_tweets.csv', 'w') as clean_tweets:
+        writer = csv.writer(clean_tweets, delimiter='\n')
         writer.writerows([ns])
 
-    #dividi i tweet in 80/20
-    gt_list = []
-    test_list = []
-    with open('csv/clean_tweets.csv', 'r') as clean:
-        reader = csv.reader(clean)
+    # split source text in 80/20 for learning
+    gt_rows = []
+    test_rows = []
+    with open('csv/clean_tweets.csv', 'r') as clean_tweets:
+        reader = csv.reader(clean_tweets)
         for line in reader:
             r = random.random()
             if r < 0.8:
-                gt_list.append(line[0])
+                gt_rows.append(line[0])
             else:
-                test_list.append(line[0])
+                test_rows.append(line[0])
 
     with open('csv/gt_tweets.csv', 'w') as gt, open('csv/lp_tweets.csv', 'w') as test:
         writer_gt = csv.writer(gt, delimiter = '\n')
-        writer_gt.writerows([gt_list])
+        writer_gt.writerows([gt_rows])
         writer_test = csv.writer(test, delimiter = '\n')
-        writer_test.writerows([test_list])
+        writer_test.writerows([test_rows])
 
     print("End clean_csv")
 
@@ -175,7 +171,7 @@ def perturbate_tweets():
 
     print("Start perturbation")
 
-    riscrittura = []
+    perturbated_rows = []
     with open('csv/lp_tweets.csv', 'r') as r:
         reader = csv.reader(r)
         for line in reader:
@@ -187,10 +183,10 @@ def perturbate_tweets():
                         r_index = random.randint(0, len(error_list[ord(tweet[i])-97]) - 1)
                         tweet = tweet[:i] + error_list[ord(tweet[i])-97][r_index] + tweet[i+1:]
                 if i == len(tweet)-1:
-                    riscrittura.append(tweet)
+                    perturbated_rows.append(tweet)
 
     with open('csv/perturbation_tweets.csv', 'w') as w:
         writer = csv.writer(w, delimiter='\n')
-        writer.writerows([riscrittura])
+        writer.writerows([perturbated_rows])
 
     print("End perturbation")

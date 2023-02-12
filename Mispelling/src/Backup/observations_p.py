@@ -1,22 +1,8 @@
-'''
-Created on 04 giu 2016
-
-@author: corrado
-'''
-
 import numpy
 import ground_truth
 
-obs_matrix = numpy.zeros(shape = (26, 26)) #dimensione esagerata, alla fine vedi se riesci a ridurla (matrice sparsa/arraylist?)
-"""
-def count_legth(file_input): #toglibile
-    c = 0
-    for line in file_input:
-        for word in line.split():
-            for i in range(len(word)-1):
-                c += 1
-    return c
-"""
+obs_matrix = numpy.zeros(shape = (26, 26))
+
 def file_to_string(file_input):
     file_string = ""
     for line in file_input:
